@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Tasty Treats</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">TASTY TREATS</div>
+        <nav>
+            <ul>
+                <li><a href="landingpage.html">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="signup-form">
+        <h2>Create an Account</h2>
+        <form id="signupForm">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username">
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email address">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+    </section>
+
+    <script>
+        // JavaScript to handle signup form submission
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                console.log('Attempting to register user...'); // Debug log
+                const response = await fetch('http://127.0.0.1:5000/register', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        username: username,
+                        email: email, 
+                        password: password 
+                    })
+                });
+
+                console.log('Response status:', response.status); // Debug log
+                const data = await response.json();
+                console.log('Response data:', data); // Debug log
+                
+                if (response.ok) {
+                    alert('Signup successful! Please login.');
+                    window.location.href = 'login.html';
+                } else {
+                    alert(`Error: ${data.message || 'Registration failed'}`);
+                }
+            } catch (err) {
+                console.error('Error during signup:', err);
+                alert('Server connection error. Please check if the server is running.');
+            }
+        });
+    </script>
+</body>
+</html>
