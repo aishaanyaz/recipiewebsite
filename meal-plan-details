@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Plan Details - Healthy Treats</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --text-color: #2C3E50;
+            --background-color: #F7F9FC;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), #FF8E8E);
+            padding: 3rem 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zM22.343 0L13.857 8.485 15.272 9.9l7.9-7.9h-.83zm5.657 0L19.514 8.485 20.93 9.9l8.485-8.485h-.83zM32.372 0L22.343 10.03 23.758 11.444l9.9-9.9h-1.286zm4.97 0L24.686 12.657l1.415 1.415 11.314-11.314h-1.286zm5.657 0L26.1 14.142l1.414 1.414L40.2 2.872V0h2.828zm5.657 0L27.515 15.556l1.414 1.414L41.615 4.286V0h2.828zm5.657 0L28.93 16.97l1.414 1.415L42.03 5.7V0h2.828zM32.372 0L42.03 9.657l1.414-1.414L34.2 0h-1.829zm5.657 0L47.8 9.77l1.415-1.414L40.2 0h-2.17zm5.657 0L53.457 9.9l1.414-1.415L46.057 0h-2.37zm5.657 0L59.114 8.485 60.53 7.07l-7.9-7.07h-3.2zM32.372 0L42.03 9.657l1.414-1.414L34.2 0h-1.829zm5.657 0L47.8 9.77l1.415-1.414L40.2 0h-2.17zm5.657 0L53.457 9.9l1.414-1.415L46.057 0h-2.37zm5.657 0L59.114 8.485 60.53 7.07l-7.9-7.07h-3.2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .planner-container {
+            max-width: 1200px;
+            margin: -30px auto 0;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-buttons {
+            margin-bottom: 2rem;
+            text-align: right;
+        }
+
+        .generate-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .meal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .day-header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .day-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid var(--secondary-color);
+        }
+
+        .meal-content {
+            padding: 2rem;
+        }
+
+        .meal-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .meal-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .meal-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .meal-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .meal-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .meal-info {
+            padding: 1.2rem;
+        }
+
+        .meal-info h4 {
+            color: var(--text-color);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .meal-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .meal-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .meal-meta span:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nutrition-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+        }
+
+        .nutrition-title {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .nutrition-item {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .nutrition-item:hover {
+            transform: translateY(-3px);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nutrition-item i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .nutrition-item:hover i {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .planner-container {
+                padding: 0 1rem;
+            }
+
+            .meal-grid {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Your Weekly Meal Plan</h1>
+            <p>A personalized menu designed just for you</p>
+        </div>
+    </div>
+
+    <div class="planner-container">
+        <div class="nav-buttons">
+            <button class="generate-button" onclick="window.location.href='meal-planner.html'">
+                <i class="fas fa-arrow-left"></i> Back to Meal Planner
+            </button>
+        </div>
+
+        <div class="nutrition-summary">
+            <h2 class="nutrition-title">Weekly Nutrition Overview</h2>
+            <div class="nutrition-grid">
+                <div class="nutrition-item">
+                    <i class="fas fa-fire"></i>
+                    <h3>Daily Calories</h3>
+                    <p id="calories">Calculating...</p>
+                </div>
+                <div class="nutrition-item">
+                    <i class="fas fa-drumstick-bite"></i>
+                    <h3>Protein</h3>
+                    <p id="protein">Calculating...</p>
+                </div>
+                <div class="nutrition-item">
+                    <i class="fas fa-bread-slice"></i>
+                    <h3>Carbs</h3>
+                    <p id="carbs">Calculating...</p>
+                </div>
+                <div class="nutrition-item">
+                    <i class="fas fa-cheese"></i>
+                    <h3>Fat</h3>
+                    <p id="fat">Calculating...</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="meal-plan" class="meal-grid">
+            <!-- Meal plan details will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const planId = urlParams.get('id');
+
+            if (!planId) {
+                alert('No meal plan specified');
+                window.location.href = 'meal-planner.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/get-meal-plan/${planId}`);
+                if (!response.ok) throw new Error('Failed to fetch meal plan');
+                
+                const plan = await response.json();
+                displayMealPlan(plan.plan);
+                updateNutritionSummary(plan.plan);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('meal-plan').innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #ff6b6b;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem;"></i>
+                        <p style="margin-top: 1rem;">Error loading meal plan. Please try again.</p>
+                    </div>
+                `;
+            }
+        });
+
+        function updateNutritionSummary(plan) {
+            let totalCalories = 0, totalProtein = 0, totalCarbs = 0, totalFat = 0;
+            let daysCount = 0;
+
+            Object.values(plan.week).forEach(day => {
+                if (day.nutrients) {
+                    totalCalories += day.nutrients.calories || 0;
+                    totalProtein += day.nutrients.protein || 0;
+                    totalCarbs += day.nutrients.carbohydrates || 0;
+                    totalFat += day.nutrients.fat || 0;
+                    daysCount++;
+                }
+            });
+
+            const avgCalories = Math.round(totalCalories / daysCount);
+            const avgProtein = Math.round(totalProtein / daysCount);
+            const avgCarbs = Math.round(totalCarbs / daysCount);
+            const avgFat = Math.round(totalFat / daysCount);
+
+            document.getElementById('calories').textContent = `${avgCalories} kcal`;
+            document.getElementById('protein').textContent = `${avgProtein}g`;
+            document.getElementById('carbs').textContent = `${avgCarbs}g`;
+            document.getElementById('fat').textContent = `${avgFat}g`;
+        }
+
+        function displayMealPlan(plan) {
+            const container = document.getElementById('meal-plan');
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            
+            container.innerHTML = '';
+            
+            days.forEach((day, index) => {
+                const dayPlan = plan.week[Object.keys(plan.week)[index]];
+                const dayCard = document.createElement('div');
+                dayCard.className = 'day-card';
+                
+                dayCard.innerHTML = `
+                    <div class="day-header">${day}</div>
+                    <div class="meal-content">
+                        ${dayPlan.meals.map(meal => `
+                            <div class="meal-item" onclick="window.location.href='recipe-details.html?id=${meal.id}'">
+                                <img src="https://spoonacular.com/recipeImages/${meal.id}-556x370.jpg" alt="${meal.title}">
+                                <div class="meal-info">
+                                    <h4>${meal.title}</h4>
+                                    <div class="meal-meta">
+                                        <span><i class="far fa-clock"></i> ${meal.readyInMinutes} mins</span>
+                                        <span><i class="fas fa-utensils"></i> ${meal.servings} servings</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                container.appendChild(dayCard);
+            });
+        }
+    </script>
+</body>
+</html> 
