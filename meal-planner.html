@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner - TASTY TREATS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --text-color: #2C3E50;
+            --background-color: #F7F9FC;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .planner-container {
+            max-width: 1200px;
+            margin: -50px auto 0;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .preferences-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+        }
+
+        .preferences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #E9ECEF;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #F8F9FA;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+
+        .generate-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .meal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .day-header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .meal-content {
+            padding: 1.5rem;
+        }
+
+        .meal-item {
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .meal-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .meal-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .meal-info {
+            margin-top: 1rem;
+        }
+
+        .meal-info h4 {
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .meal-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #6C757D;
+        }
+
+        .meal-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .nutrition-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: #F8F9FA;
+            border-radius: 20px;
+            margin: 0.3rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .nutrition-tag:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nutrition-tag i {
+            margin-right: 0.5rem;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #F3F3F3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .saved-plans-section {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .saved-plan-card {
+            background: #F8F9FA;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .saved-plan-card:hover {
+            transform: translateX(10px);
+            background: white;
+            box-shadow: var(--card-shadow);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Weekly Meal Planner</h1>
+            <p>Create your perfect meal plan tailored to your dietary needs and preferences</p>
+        </div>
+    </div>
+
+    <div class="planner-container">
+        <div class="nav-buttons" style="margin-bottom: 2rem; text-align: right;">
+            <button class="generate-button" style="width: auto; padding: 0.8rem 1.5rem;" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+        </div>
+        <div class="preferences-card">
+            <h2 class="section-title">
+                <i class="fas fa-sliders-h"></i>
+                Customize Your Plan
+            </h2>
+            <form id="preferences-form" class="preferences-grid">
+                <div class="input-group">
+                    <label for="targetCalories">Daily Calorie Target</label>
+                    <input type="number" id="targetCalories" value="2000" min="1000" max="4000">
+                </div>
+                <div class="input-group">
+                    <label for="diet">Diet Type</label>
+                    <select id="diet">
+                        <option value="">No specific diet</option>
+                        <option value="diabetes-friendly">Diabetes-Friendly</option>
+                        <option value="heart-healthy">Heart-Healthy</option>
+                        <option value="low-sodium">Low Sodium</option>
+                        <option value="low-cholesterol">Low Cholesterol</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="gluten-free">Gluten Free</option>
+                        <option value="paleo">Paleo</option>
+                        <option value="keto">Ketogenic</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="exclude">Exclude Ingredients</label>
+                    <input type="text" id="exclude" placeholder="e.g., shellfish, nuts, dairy">
+                </div>
+                <button type="submit" class="generate-button">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    Generate Meal Plan
+                </button>
+            </form>
+        </div>
+
+        <div class="loading-overlay">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <div id="meal-plan" class="meal-grid">
+            <!-- Meal plans will be generated here -->
+        </div>
+
+        <div class="saved-plans-section">
+            <h2 class="section-title">
+                <i class="fas fa-history"></i>
+                Saved Meal Plans
+            </h2>
+            <div id="saved-plans-container">
+                <!-- Saved plans will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'c964e9508dad440cb0220a49bd3e0b1e';
+        let currentPlan = null;
+
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            loadSavedPlans();
+        });
+
+        // Generate meal plan
+        document.getElementById('preferences-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loadingOverlay = document.querySelector('.loading-overlay');
+            const mealPlanContainer = document.getElementById('meal-plan');
+            
+            loadingOverlay.style.display = 'flex';
+            mealPlanContainer.innerHTML = '';
+
+            const targetCalories = document.getElementById('targetCalories').value;
+            const diet = document.getElementById('diet').value;
+            const exclude = document.getElementById('exclude').value;
+
+            try {
+                const apiUrl = `https://api.spoonacular.com/mealplanner/generate?apiKey=${API_KEY}&timeFrame=week&targetCalories=${targetCalories}${diet ? '&diet=' + diet : ''}${exclude ? '&exclude=' + exclude : ''}`;
+                console.log('API URL:', apiUrl); // Debug log
+
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                console.log('API Response:', data); // Debug log
+
+                if (data.status === 'failure' || data.code === 402) {
+                    throw new Error('Daily API quota exceeded. Please try again tomorrow.');
+                }
+
+                if (!data.week) {
+                    throw new Error('Invalid response from API: ' + JSON.stringify(data));
+                }
+
+                currentPlan = data;
+                displayMealPlan(data);
+            } catch (error) {
+                console.error('Error:', error);
+                mealPlanContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #ff6b6b;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem;"></i>
+                        <p style="margin-top: 1rem;">${error.message || 'Error generating meal plan. Please try again.'}</p>
+                    </div>
+                `;
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        });
+
+        function displayMealPlan(plan) {
+            const container = document.getElementById('meal-plan');
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            
+            container.innerHTML = '';
+            
+            days.forEach((day, index) => {
+                const dayPlan = plan.week[Object.keys(plan.week)[index]];
+                const dayCard = document.createElement('div');
+                dayCard.className = 'day-card';
+                
+                dayCard.innerHTML = `
+                    <div class="day-header">${day}</div>
+                    <div class="meal-content">
+                        ${dayPlan.meals.map(meal => `
+                            <div class="meal-item" onclick="window.location.href='recipe-details.html?id=${meal.id}'">
+                                <img src="https://spoonacular.com/recipeImages/${meal.id}-556x370.jpg" alt="${meal.title}">
+                                <div class="meal-info">
+                                    <h4>${meal.title}</h4>
+                                    <div class="meal-meta">
+                                        <span><i class="far fa-clock"></i> ${meal.readyInMinutes} mins</span>
+                                        <span><i class="fas fa-utensils"></i> ${meal.servings} servings</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                container.appendChild(dayCard);
+            });
+
+            // Add save button
+            const saveButton = document.createElement('button');
+            saveButton.className = 'generate-button';
+            saveButton.style.marginTop = '2rem';
+            saveButton.innerHTML = '<i class="fas fa-save"></i> Save This Meal Plan';
+            saveButton.onclick = saveMealPlan;
+            container.appendChild(saveButton);
+        }
+
+        async function saveMealPlan() {
+            if (!currentPlan) return;
+
+            const user = JSON.parse(localStorage.getItem('user'));
+            try {
+                const response = await fetch('http://127.0.0.1:5000/save-meal-plan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: user.id,
+                        plan: currentPlan
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to save meal plan');
+                }
+
+                alert('Meal plan saved successfully!');
+                loadSavedPlans();
+            } catch (error) {
+                console.error('Error saving meal plan:', error);
+                alert('Failed to save meal plan. Please try again.');
+            }
+        }
+
+        async function loadSavedPlans() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const container = document.getElementById('saved-plans-container');
+
+            try {
+                console.log('Fetching saved plans for user:', user.id);
+                const response = await fetch(`http://127.0.0.1:5000/get-meal-plans/${user.id}`);
+                
+                console.log('Response status:', response.status);
+                const plans = await response.json();
+                console.log('Received plans:', plans);
+
+                if (!Array.isArray(plans)) {
+                    console.error('Unexpected response format:', plans);
+                    throw new Error('Invalid response format');
+                }
+
+                if (plans.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 2rem; color: #666;">
+                            <i class="fas fa-clipboard-list" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>No saved meal plans yet. Generate your first meal plan above!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = '';
+                plans.forEach(plan => {
+                    console.log('Processing plan:', plan);
+                    try {
+                        // Extract nutrients from the week's meals
+                        const weekNutrients = {
+                            calories: 0,
+                            protein: 0,
+                            carbohydrates: 0
+                        };
+
+                        Object.values(plan.plan.week).forEach(day => {
+                            day.nutrients = day.nutrients || {};
+                            weekNutrients.calories += day.nutrients.calories || 0;
+                            weekNutrients.protein += day.nutrients.protein || 0;
+                            weekNutrients.carbohydrates += day.nutrients.carbohydrates || 0;
+                        });
+
+                        // Calculate daily averages
+                        const daysInWeek = 7;
+                        weekNutrients.calories = Math.round(weekNutrients.calories / daysInWeek);
+                        weekNutrients.protein = Math.round(weekNutrients.protein / daysInWeek);
+                        weekNutrients.carbohydrates = Math.round(weekNutrients.carbohydrates / daysInWeek);
+
+                        const planCard = document.createElement('div');
+                        planCard.className = 'saved-plan-card';
+                        planCard.innerHTML = `
+                            <h3>Meal Plan (${new Date(plan.created_at).toLocaleDateString()})</h3>
+                            <div class="nutrition-summary">
+                                <span class="nutrition-tag">
+                                    <i class="fas fa-fire"></i> ${weekNutrients.calories} calories/day
+                                </span>
+                                <span class="nutrition-tag">
+                                    <i class="fas fa-drumstick-bite"></i> ${weekNutrients.protein}g protein/day
+                                </span>
+                                <span class="nutrition-tag">
+                                    <i class="fas fa-bread-slice"></i> ${weekNutrients.carbohydrates}g carbs/day
+                                </span>
+                            </div>
+                            <button class="generate-button" style="margin-top: 1rem" onclick="viewPlan(${plan.id})">
+                                <i class="fas fa-eye"></i> View Plan
+                            </button>
+                        `;
+                        container.appendChild(planCard);
+                    } catch (err) {
+                        console.error('Error processing plan:', err, plan);
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading saved plans:', error);
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #ff6b6b;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 2rem;"></i>
+                        <p style="margin-top: 1rem;">Error loading saved plans. Please try again.</p>
+                        <button class="generate-button" style="margin-top: 1rem; width: auto;" onclick="loadSavedPlans()">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function viewPlan(planId) {
+            // Implement view saved plan functionality
+            window.location.href = `meal-plan-details.html?id=${planId}`;
+        }
+    </script>
+</body>
+</html> 
