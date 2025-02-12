@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details | Tasty Treats</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Francois+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <style>
+        .recipe-details {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-in;
+        }
+
+        .recipe-header {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .recipe-img {
+            width: 400px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-img:hover {
+            transform: scale(1.05);
+        }
+
+        .recipe-title h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            color: #2C3E50;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .recipe-info h3 {
+            font-family: 'Francois One', sans-serif;
+            color: #E67E22;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #E67E22;
+            padding-bottom: 0.5rem;
+        }
+
+        #ingredients-list, #instructions-list {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+
+        #ingredients-list li {
+            padding: 0.5rem 0;
+            font-size: 1.1rem;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+            animation-delay: calc(var(--item-index) * 0.1s);
+        }
+
+        #instructions-list li {
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0;
+            animation-delay: calc(var(--item-index) * 0.1s);
+        }
+
+        .nutrition-info {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 1rem;
+            background: #E67E22;
+            color: white;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .nutrition-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin-top: 2rem;
+            background: #2C3E50;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #E67E22;
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: #2C3E50;
+            color: white;
+            text-align: center;
+        }
+
+        footer ul {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #E67E22;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+        <div class="logo">TASTY TREATS</div>
+        <nav>
+            <ul>
+                <li><a href=landingpage.html>HOME</a></li>
+                <li class="dropdown">
+                    <a href="#">RECIPES</a>
+                    <ul class="dropdown-menu">
+                        <li><a href=breakfast.html>Breakfast</a></li>
+                        <li><a href=lunch.html>Lunch</a></li>
+                        <li><a href=dinner.html>Dinner</a></li>
+                        <li><a href=cholesterol.html>Cholesterol</a></li>
+                        <li><a href=heart-disease.html>Heart Disease</a></li>
+                        <li><a href=high-blood-pressure.html>High Blood Pressure</a></li>
+                        <li><a href=diabetes.html>Diabetes</a></li>
+                    </ul>
+                </li>
+                <li><a href=login.html>LOGIN/SIGN UP</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="recipe-details">
+        <div class="recipe-header">
+            <img id="recipe-image" src="" alt="Recipe Image" class="recipe-img">
+            <div class="recipe-title">
+                <h1 id="recipe-name"></h1>
+                <p id="recipe-description"></p>
+            </div>
+        </div>
+
+        <div class="recipe-info">
+            <div>
+                <h3>Ingredients:</h3>
+                <ul id="ingredients-list"></ul>
+            </div>
+
+            <div>
+                <h3>Instructions:</h3>
+                <ol id="instructions-list"></ol>
+            </div>
+
+            <div class="nutrition-info">
+                <h3>Nutrition Information</h3>
+                <div id="nutrition-grid" class="nutrition-grid"></div>
+            </div>
+        </div>
+
+        <button class="back-button" onclick="window.history.back()">Back to Recipes</button>
+    </section>
+
+    <footer>
+        <p>&copy; Tasty Treats | All Rights Reserved</p>
+        <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        const recipeId = new URLSearchParams(window.location.search).get('id');
+        const API_KEY = 'c964e9508dad440cb0220a49bd3e0b1e';
+        
+        const recipeName = document.getElementById('recipe-name');
+        const recipeImage = document.getElementById('recipe-image');
+        const recipeDescription = document.getElementById('recipe-description');
+        const ingredientsList = document.getElementById('ingredients-list');
+        const instructionsList = document.getElementById('instructions-list');
+        const nutritionGrid = document.getElementById('nutrition-grid');
+        
+        // Fetch both recipe information and nutrition information
+        Promise.all([
+            fetch(`https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`),
+            fetch(`https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?apiKey=${API_KEY}`)
+        ])
+        .then(responses => Promise.all(responses.map(response => response.json())))
+        .then(([recipeData, nutritionData]) => {
+            recipeName.textContent = recipeData.title;
+            recipeImage.src = recipeData.image;
+            
+            // Clean HTML tags from summary
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = recipeData.summary;
+            recipeDescription.textContent = tempDiv.textContent;
+            
+            // Populate ingredients with animation
+            ingredientsList.innerHTML = '';
+            recipeData.extendedIngredients.forEach((ingredient, index) => {
+                const li = document.createElement('li');
+                li.textContent = ingredient.original;
+                li.style.setProperty('--item-index', index);
+                ingredientsList.appendChild(li);
+            });
+
+            // Clean and populate instructions with animation
+            instructionsList.innerHTML = '';
+            const cleanInstructions = recipeData.instructions.replace(/<[^>]*>/g, '');
+            const instructions = cleanInstructions.split(/\d+\.|\./).filter(instruction => instruction.trim());
+            
+            instructions.forEach((instruction, index) => {
+                if (instruction.trim()) {
+                    const li = document.createElement('li');
+                    li.textContent = instruction.trim();
+                    li.style.setProperty('--item-index', index);
+                    instructionsList.appendChild(li);
+                }
+            });
+
+            // Display nutrition information
+            nutritionGrid.innerHTML = '';
+            const nutrients = [
+                { name: 'Calories', value: nutritionData.calories, unit: 'kcal' },
+                { name: 'Protein', value: nutritionData.protein, unit: 'g' },
+                { name: 'Carbohydrates', value: nutritionData.carbs, unit: 'g' },
+                { name: 'Fat', value: nutritionData.fat, unit: 'g' },
+                { name: 'Fiber', value: nutritionData.fiber, unit: 'g' }
+            ];
+
+            nutrients.forEach(nutrient => {
+                const div = document.createElement('div');
+                div.className = 'nutrition-item';
+                div.innerHTML = `
+                    <strong>${nutrient.name}</strong><br>
+                    ${nutrient.value} ${nutrient.unit}
+                `;
+                nutritionGrid.appendChild(div);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching recipe details:', error);
+            nutritionGrid.innerHTML = '<p>Unable to load nutrition information</p>';
+        });
+    </script>
+</body>
+</html>

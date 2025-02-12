@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Recipes - Healthy Treats</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            background: linear-gradient(135deg, #ff6b6b, #ffd3d3);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .saved-recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .recipe-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .recipe-info {
+            padding: 1.5rem;
+        }
+
+        .recipe-info h3 {
+            margin: 0 0 1rem 0;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .delete-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #ff5252;
+        }
+
+        .no-recipes {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #ff6b6b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">TASTY TREATS</div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="landingpage.html">Home</a></li>
+                <li><a href="#" id="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="welcome-section">
+            <h1>My Saved Recipes</h1>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading your recipes...</p>
+        </div>
+
+        <div class="saved-recipes-grid" id="saved-recipes">
+            <!-- Saved recipes will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'c964e9508dad440cb0220a49bd3e0b1e';
+
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            loadSavedRecipes(user.id);
+        });
+
+        // Logout functionality
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+
+        async function loadSavedRecipes(userId) {
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('saved-recipes');
+            
+            loading.style.display = 'block';
+            container.innerHTML = '';
+
+            try {
+                // First, get saved recipe IDs from your backend
+                const response = await fetch(`http://127.0.0.1:5000/get-saved-recipes/${userId}`);
+                const savedRecipes = await response.json();
+
+                if (savedRecipes.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-recipes">
+                            <h2>No saved recipes yet</h2>
+                            <p>Go to the dashboard to search and save recipes!</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Then, fetch recipe details from Spoonacular
+                for (const recipeId of savedRecipes) {
+                    const recipeResponse = await fetch(
+                        `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${API_KEY}`
+                    );
+                    const recipe = await recipeResponse.json();
+
+                    const card = document.createElement('div');
+                    card.className = 'recipe-card';
+                    card.innerHTML = `
+                        <img src="${recipe.image}" alt="${recipe.title}">
+                        <div class="recipe-info">
+                            <h3>${recipe.title}</h3>
+                            <button class="delete-btn" data-recipe-id="${recipe.id}">
+                                Remove from Saved
+                            </button>
+                        </div>
+                    `;
+
+                    // Add click event for recipe details
+                    card.querySelector('img').addEventListener('click', () => {
+                        window.location.href = `recipe-details.html?id=${recipe.id}`;
+                    });
+
+                    // Add click event for delete button
+                    card.querySelector('.delete-btn').addEventListener('click', async (e) => {
+                        e.stopPropagation();
+                        const recipeId = e.target.dataset.recipeId;
+                        await deleteRecipe(userId, recipeId);
+                        card.remove();
+                    });
+
+                    container.appendChild(card);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = '<p>Error loading saved recipes. Please try again later.</p>';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function deleteRecipe(userId, recipeId) {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/delete-recipe', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        recipeId: recipeId
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete recipe');
+                }
+
+                alert('Recipe removed from saved recipes');
+            } catch (error) {
+                console.error('Error deleting recipe:', error);
+                alert('Failed to remove recipe. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html> 

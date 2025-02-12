@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes-Friendly Recipes - Healthy Treats</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .health-header {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+                        url('https://www.diabetes.org.uk/resources-s3/2019-03/diabetes-healthy-food.jpg');
+            background-size: cover;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .health-header h1 {
+            font-family: 'DM Serif Display', serif;
+            color: #2E7D32;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .health-info {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            padding: 2rem;
+            background-color: #E8F5E9;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .recipe-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .recipe-info {
+            padding: 1.5rem;
+        }
+
+        .recipe-info h3 {
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+
+        .nutrition-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #E8F5E9;
+            border-top: 5px solid #2E7D32;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">TASTY TREATS</div>
+        <nav>
+            <ul>
+                <li><a href=landingpage.html>HOME</a></li>
+                <li class="dropdown">
+                    <a href="#">RECIPES</a>
+                    <ul class="dropdown-menu">
+                        <li><a href=breakfast.html>Breakfast</a></li>
+                        <li><a href=lunch.html>Lunch</a></li>
+                        <li><a href=dinner.html>Dinner</a></li>
+                        <li><a href=cholesterol.html>Cholesterol</a></li>
+                        <li><a href=heart-disease.html>Heart Disease</a></li>
+                        <li><a href=high-blood-pressure.html>High Blood Pressure</a></li>
+                        <li><a href=diabetes.html>Diabetes</a></li>
+                    </ul>
+                </li>
+                <li><a href=login.html>LOGIN/SIGN UP</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="health-header">
+        <h1>Diabetes-Friendly Recipes</h1>
+        <p>Delicious recipes designed for managing blood sugar levels</p>
+    </div>
+
+    <div class="health-info">
+        <h2>Eating Well with Diabetes</h2>
+        <p>These recipes are specially curated to be low in sugar and carbohydrates, with a focus on ingredients that have a low glycemic index. Each recipe includes detailed nutritional information to help you make informed choices.</p>
+    </div>
+
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Loading recipes...</p>
+    </div>
+
+    <div class="recipe-grid" id="recipe-container">
+        <!-- Recipes will be dynamically loaded here -->
+    </div>
+
+    <script>
+        const API_KEY = 'c964e9508dad440cb0220a49bd3e0b1e';
+
+        async function fetchDiabeticRecipes() {
+            const loading = document.getElementById('loading');
+            const container = document.getElementById('recipe-container');
+            
+            loading.style.display = 'block';
+            container.innerHTML = '';
+
+            try {
+                const response = await fetch(
+                    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&diet=diabetic&maxSugar=10&number=12&addRecipeNutrition=true`
+                );
+                const data = await response.json();
+
+                data.results.forEach(recipe => {
+                    const card = document.createElement('div');
+                    card.className = 'recipe-card';
+                    card.innerHTML = `
+                        <img src="${recipe.image}" alt="${recipe.title}">
+                        <div class="recipe-info">
+                            <h3>${recipe.title}</h3>
+                            <div class="nutrition-tags">
+                                <span class="tag">Carbs: ${Math.round(recipe.nutrition.nutrients.find(n => n.name === "Carbohydrates").amount)}g</span>
+                                <span class="tag">Sugar: ${Math.round(recipe.nutrition.nutrients.find(n => n.name === "Sugar").amount)}g</span>
+                                <span class="tag">Fiber: ${Math.round(recipe.nutrition.nutrients.find(n => n.name === "Fiber").amount)}g</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', () => {
+                        window.location.href = `recipe-details.html?id=${recipe.id}`;
+                    });
+                    
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error fetching recipes:', error);
+                container.innerHTML = '<p>Error loading recipes. Please try again later.</p>';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Load recipes when page loads
+        document.addEventListener('DOMContentLoaded', fetchDiabeticRecipes);
+    </script>
+</body>
+</html> 

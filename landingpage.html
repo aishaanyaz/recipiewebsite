@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASTY TREATS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Francois+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Francois+One&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Francois+One&display=swap');
+        </style>
+</head>
+<body>
+    <header>
+        <div class="logo">TASTY TREATS</div>
+        <nav>
+            <ul>
+                <li><a href=landingpage.html>HOME</a></li>
+                <li class="dropdown">
+                    <a href="#">RECIPES</a>
+                    <ul class="dropdown-menu">
+                        <li><a href=breakfast.html>Breakfast</a></li>
+                        <li><a href=lunch.html>Lunch</a></li>
+                        <li><a href=dinner.html>Dinner</a></li>
+                        <li><a href=cholesterol.html>Cholesterol</a></li>
+                        <li><a href=heart-disease.html>Heart Disease</a></li>
+                        <li><a href=high-blood-pressure.html>High Blood Pressure</a></li>
+                        <li><a href=diabetes.html>Diabetes</a></li>
+                    </ul>
+                </li>
+                <li><a href=login.html>LOGIN/SIGN UP</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    
+    <section class="typing-carousel">
+        <div class="image-carousel">
+            <img id="food-image" src="https://myeverydaytable.com/wp-content/uploads/FullEnglishBreakfast-7.jpg" alt="Food" class="circular-image">
+        </div>
+        <div class="typing-animation">
+            <p class="typing-text">ARE YOU CRAVING</p>
+            <h1 id="typed-text"></h1>
+
+            
+    
+        </div>
+        <button>Find your recipie now !</button>
+        
+
+        
+    </section>
+
+   
+        
+    
+    <section class="search-section">
+        <input type="text" id="recipe-search" placeholder="Search for recipes..." />
+        
+        <button id="search-button">Search</button>
+        
+    </section>
+    
+    <div class="recipe-results">
+        <!-- Dynamically filled with recipe results -->
+    </div>
+    
+    <div id="loading-screen" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading recipes...</p>
+    </div>
+    
+    
+
+
+
+
+
+    <section class="explore">
+        <h2>EXPLORE BY MEAL</h2>
+        <div class="explore-grid">
+            <div class="explore-card" onclick="window.location.href='breakfast.html'">
+                <img src="https://i.pinimg.com/736x/e8/6e/d7/e86ed76ca008edba56d3e0d3def34d6c.jpg" alt="brekfast">
+                <h3>BREAKFAST</h3>
+            </div>
+
+            <div class="explore-card" onclick="window.location.href='lunch.html'">
+                <img src="https://i.pinimg.com/736x/2c/15/15/2c15155b1483d5a2d84b5be8e7a2ccfd.jpg" >
+                <h3>LUNCH</h3>
+            </div>
+
+
+            <div class="explore-card" onclick="window.location.href='dinner.html'">
+                <img src=" https://i.pinimg.com/enabled_hi/564x/c6/9e/87/c69e872dcdefc7f61a27c66146e8d396.jpg">
+                <h3>DINNER</h3>
+            </div>
+
+            
+            
+        </div>
+    </section>
+
+    <hr class="styled-hr">
+
+
+
+
+    <section class="explore-special">
+        <h2>SPECIAL DIET RECIPES</h2>
+        <div class="explore-grid">
+            <div class="explore-card" onclick="window.location.href='diabetes.html'">
+                <img src="https://d18yrmqbzi0q7a.cloudfront.net/wp-content/uploads/diabetes-symptoms-and-treatment.jpg" alt="Diabetes">
+                <h3>Diabetes</h3>
+            </div>
+            <div class="explore-card" onclick="window.location.href='heart-disease.html'">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4dg6WjFaE_Q9Wr9ibFvZvf4KUkmgA7pFOQg&s" alt="Heart Disease">
+                <h3>Heart Disease</h3>
+            </div>
+            <div class="explore-card" onclick="window.location.href='high-blood-pressure.html'">
+                <img src="https://static01.nyt.com/images/2020/10/25/science/20BRODY-PRESSURE/20BRODY-PRESSURE-superJumbo.jpg" alt="High Blood Pressure">
+                <h3>High Blood Pressure</h3>
+            </div>
+            <div class="explore-card" onclick="window.location.href='cholesterol.html'">
+                <img src="https://www.diabetes.co.uk/wp-content/uploads/2022/10/cholesterol-spelledout.jpg" alt="Cholesterol">
+                <h3>Cholesterol</h3>
+            </div>
+        </div>
+    </section>
+
+ 
+
+
+    
+
+
+ 
+
+   
+    <footer>
+        <p>&copy; AAAA</p>
+        <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+        </ul>
+    </footer>
+
+    <script src="script.js">
+       
+    </script>
+</body>
+</html>
